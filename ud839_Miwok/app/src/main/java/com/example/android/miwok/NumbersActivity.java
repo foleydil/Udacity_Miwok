@@ -15,16 +15,16 @@ public class NumbersActivity extends AppCompatActivity {
 
         //Create ArrayList of words
         ArrayList<Word> words = new ArrayList<>();
-        words.add(new Word("one","lutti"));
-        words.add(new Word("two","otiiko"));
-        words.add(new Word("three","tolookosu"));
-        words.add(new Word("four","oyyisa"));
-        words.add(new Word("five","massokka"));
-        words.add(new Word("six","temmokka"));
-        words.add(new Word("seven","kenekaku"));
-        words.add(new Word("eight", "kawinta"));
-        words.add(new Word("nine","wo'e"));
-        words.add(new Word("ten","na'aacha"));
+        words.add(new Word("one","lutti",0));
+        words.add(new Word("two","otiiko",0));
+        words.add(new Word("three","tolookosu",0));
+        words.add(new Word("four","oyyisa",0));
+        words.add(new Word("five","massokka",0));
+        words.add(new Word("six","temmokka",0));
+        words.add(new Word("seven","kenekaku",0));
+        words.add(new Word("eight", "kawinta",0));
+        words.add(new Word("nine","wo'e",0));
+        words.add(new Word("ten","na'aacha",0));
 
         WordAdapter adapter = new WordAdapter(this, words);
 
