@@ -2,34 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="88dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/tan_background"
+    android:minHeight="@dimen/list_item_height">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="88dp"
-        android:layout_height="@dimen/list_item_height"
-        android:background="@color/tan_background"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="@dimen/list_item_height"
+        android:layout_height="@dimen/list_item_height" />
 
     <LinearLayout
+        android:id="@+id/text_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height"
-        android:background="@color/category_numbers"
         android:orientation="vertical"
         android:paddingLeft="16dp">
 
         <TextView
             android:id="@+id/miwok_text_view"
             style="@style/MiwokTextStyle"
-            android:layout_weight="1"
             tools:text="miwok" />
 
         <TextView
             android:id="@+id/default_text_view"
             style="@style/DefaultTextStyle"
-            android:layout_weight="1"
             tools:text="default" />
 
     </LinearLayout>
