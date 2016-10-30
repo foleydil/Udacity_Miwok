@@ -57,7 +57,7 @@ public class WordAdapter extends ArrayAdapter<Word>{
         int color = ContextCompat.getColor(getContext(), mColorResourceID);
         textContainer.setBackgroundColor(color);
 
-        textContainer.setOnClickListener(new View.OnClickListener() {
+        listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mediaPlayer = MediaPlayer.create(getContext(), currentWord.getAudioResourceID());

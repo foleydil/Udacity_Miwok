@@ -15,7 +15,8 @@ public class PhrasesActivity extends AppCompatActivity {
 
         //Create ArrayList of words
         ArrayList<Word> words = new ArrayList<>();
-        words.add(new Word("Where are you going?","minto wuksus", R.raw.phrase_where_are_you_going));
+        words.add(new Word("Where are you going?","minto wuksus",
+                R.raw.phrase_where_are_you_going));
         words.add(new Word("What is your name?","tinnә oyaase'nә", R.raw.phrase_what_is_your_name));
         words.add(new Word("My name is...","oyaaset...", R.raw.phrase_my_name_is));
         words.add(new Word("How are you feeling?","michәksәs?", R.raw.phrase_how_are_you_feeling));
