@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="1"
     android:background="@color/tan_background"
-    android:minHeight="@dimen/list_item_height">
+    android:minHeight="@dimen/list_item_height"
+    android:orientation="horizontal"
+    android:weightSum="1">
 
     <ImageView
         android:id="@+id/image"
