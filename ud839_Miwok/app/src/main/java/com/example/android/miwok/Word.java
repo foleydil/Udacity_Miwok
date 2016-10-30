@@ -36,4 +36,6 @@ public class Word {
     public int getImageResourceID() { return mImageResourceID; }
 
     public boolean hasImage(){ return mImageResourceID != NO_IMAGE_PROVIDED; }
+
+    public int getAudioResourceID() { return mAudioResourceID; }
 }
