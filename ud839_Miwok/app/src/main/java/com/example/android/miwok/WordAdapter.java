@@ -28,6 +28,20 @@ public class WordAdapter extends ArrayAdapter<Word>{
         mColorResourceID = colorResourceId;
     }
 
+    private void releaseMediaPlayer() {
+        // If the media player is not null, then it may be currently playing a sound.
+        if (mediaPlayer != null) {
+            // Regardless of the current state of the media player, release its resources
+            // because we no longer need it.
+            mediaPlayer.release();
+
+            // Set the media player back to null. For our code, we've decided that
+            // setting the media player to null is an easy way to tell that the media player
+            // is not configured to play an audio file at the moment.
+            mediaPlayer = null;
+        }
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Check if the existing view is being used, otherwise inflate the view
@@ -60,8 +74,15 @@ public class WordAdapter extends ArrayAdapter<Word>{
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                releaseMediaPlayer();
                 mediaPlayer = MediaPlayer.create(getContext(), currentWord.getAudioResourceID());
                 mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        releaseMediaPlayer();
+                    }
+                });
             }
         });
 
