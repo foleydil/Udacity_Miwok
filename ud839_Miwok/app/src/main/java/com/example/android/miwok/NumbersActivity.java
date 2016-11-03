@@ -35,8 +35,10 @@ public class NumbersActivity extends AppCompatActivity {
                 public void onAudioFocusChange(int focusChange) {
                     if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT){
                         mMediaPlayer.pause();
+                        mMediaPlayer.seekTo(0);
                     } else if (focusChange ==  AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
                         mMediaPlayer.pause();
+                        mMediaPlayer.seekTo(0);
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS){
                         releaseMediaPlayer();
                         audioManager.abandonAudioFocus(audioFocusChangeListener);
