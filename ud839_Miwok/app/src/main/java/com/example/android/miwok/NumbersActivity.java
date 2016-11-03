@@ -84,7 +84,6 @@ public class NumbersActivity extends AppCompatActivity {
                 audioFocusChangeListener.onAudioFocusChange(result);
 
                 mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         releaseMediaPlayer();

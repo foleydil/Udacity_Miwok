@@ -1,5 +1,6 @@
 package com.example.android.miwok;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,11 +28,23 @@ public class ColorsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        releaseMediaPlayer();
-    }
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener =
+            new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT){
+                        mMediaPlayer.pause();
+                    } else if (focusChange ==  AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
+                        mMediaPlayer.pause();
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS){
+                        releaseMediaPlayer();
+                        audioManager.abandonAudioFocus(audioFocusChangeListener);
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        mMediaPlayer.start();
+                    }
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +76,29 @@ public class ColorsActivity extends AppCompatActivity {
                 releaseMediaPlayer();
                 Word word = words.get(position);
                 mMediaPlayer = MediaPlayer.create(ColorsActivity.this, word.getAudioResourceID());
-                mMediaPlayer.start();
+
+                /** Request Audio Focus **/
+                audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+                int result = audioManager.requestAudioFocus(audioFocusChangeListener,
+                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+                audioFocusChangeListener.onAudioFocusChange(result);
+
                 mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         releaseMediaPlayer();
+                        audioManager.abandonAudioFocus(audioFocusChangeListener);
                     }
                 });
             }
         });
-
-
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+        audioManager.abandonAudioFocus(audioFocusChangeListener);
+    }
+
 }
