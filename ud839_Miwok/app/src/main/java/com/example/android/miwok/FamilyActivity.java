@@ -106,5 +106,4 @@ public class FamilyActivity extends AppCompatActivity {
         releaseMediaPlayer();
         audioManager.abandonAudioFocus(audioFocusChangeListener);
     }
-
 }

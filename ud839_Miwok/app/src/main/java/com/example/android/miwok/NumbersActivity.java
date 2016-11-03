@@ -100,5 +100,4 @@ public class NumbersActivity extends AppCompatActivity {
         releaseMediaPlayer();
         audioManager.abandonAudioFocus(audioFocusChangeListener);
     }
-
 }
