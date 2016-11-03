@@ -33,11 +33,11 @@ public class ColorsActivity extends AppCompatActivity {
             new AudioManager.OnAudioFocusChangeListener() {
                 @Override
                 public void onAudioFocusChange(int focusChange) {
-                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT){
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
                         mMediaPlayer.pause();
-                    } else if (focusChange ==  AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
                         mMediaPlayer.pause();
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS){
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                         releaseMediaPlayer();
                         audioManager.abandonAudioFocus(audioFocusChangeListener);
                     } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
