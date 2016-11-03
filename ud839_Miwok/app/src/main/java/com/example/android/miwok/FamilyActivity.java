@@ -51,6 +51,8 @@ public class FamilyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
 
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
         //Create ArrayList of words
         final ArrayList<Word> words = new ArrayList<>();
         words.add(new Word("father","әpә",R.drawable.family_father, R.raw.family_father));
@@ -84,7 +86,6 @@ public class FamilyActivity extends AppCompatActivity {
                 mMediaPlayer = MediaPlayer.create(FamilyActivity.this, word.getAudioResourceID());
 
                 /** Request Audio Focus **/
-                audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
                 int result = audioManager.requestAudioFocus(audioFocusChangeListener,
                         AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
                 audioFocusChangeListener.onAudioFocusChange(result);

@@ -51,6 +51,8 @@ public class ColorsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
 
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
         //Create ArrayList of words
         final ArrayList<Word> words = new ArrayList<>();
         words.add(new Word("red","weṭeṭṭi",R.drawable.color_red, R.raw.color_red));
@@ -78,7 +80,6 @@ public class ColorsActivity extends AppCompatActivity {
                 mMediaPlayer = MediaPlayer.create(ColorsActivity.this, word.getAudioResourceID());
 
                 /** Request Audio Focus **/
-                audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
                 int result = audioManager.requestAudioFocus(audioFocusChangeListener,
                         AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
                 audioFocusChangeListener.onAudioFocusChange(result);

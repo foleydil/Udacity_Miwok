@@ -52,6 +52,8 @@ public class PhrasesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
 
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
         //Create ArrayList of words
         final ArrayList<Word> words = new ArrayList<>();
         words.add(new Word("Where are you going?","minto wuksus",
@@ -80,7 +82,6 @@ public class PhrasesActivity extends AppCompatActivity {
                 mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, word.getAudioResourceID());
 
                 /** Request Audio Focus **/
-                audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
                 int result = audioManager.requestAudioFocus(audioFocusChangeListener,
                         AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
                 audioFocusChangeListener.onAudioFocusChange(result);
