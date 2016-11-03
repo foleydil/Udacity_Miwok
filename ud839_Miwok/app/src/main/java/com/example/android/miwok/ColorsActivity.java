@@ -39,7 +39,6 @@ public class ColorsActivity extends AppCompatActivity {
                         mMediaPlayer.seekTo(0);
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                         releaseMediaPlayer();
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
                     } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
                         mMediaPlayer.start();
                     }
