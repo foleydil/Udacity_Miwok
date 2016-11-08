@@ -11,10 +11,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class CategoryPagerAdapter extends FragmentPagerAdapter {
     final int num_items = 4;
-    Context context;
+    private Context context;
 
-    public CategoryPagerAdapter(FragmentManager fm){
+    public CategoryPagerAdapter(FragmentManager fm, Context context){
         super(fm);
+        this.context = context;
     }
 
     @Override
