@@ -1,18 +1,53 @@
 package com.example.android.miwok;
 
+
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class PhrasesActivity extends AppCompatActivity {
+import static android.content.Context.AUDIO_SERVICE;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PhrasesFragment extends Fragment {
 
     private MediaPlayer mMediaPlayer;
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener =
+            new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
+                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                        mMediaPlayer.pause();
+                        mMediaPlayer.seekTo(0);
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                        releaseMediaPlayer();
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        mMediaPlayer.start();
+                    }
+                }
+            };
+    private MediaPlayer.OnCompletionListener mOnCompletionListener = (new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            releaseMediaPlayer();
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+        }
+    });
+
+    public PhrasesFragment() {
+        // Required empty public constructor
+    }
 
     private void releaseMediaPlayer() {
         // If the media player is not null, then it may be currently playing a sound.
@@ -28,29 +63,19 @@ public class PhrasesActivity extends AppCompatActivity {
         }
     }
 
-    private AudioManager audioManager;
-    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener =
-            new AudioManager.OnAudioFocusChangeListener() {
-                @Override
-                public void onAudioFocusChange(int focusChange) {
-                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
-                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-                        mMediaPlayer.pause();
-                        mMediaPlayer.seekTo(0);
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS){
-                        releaseMediaPlayer();
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                        mMediaPlayer.start();
-                    }
-                }
-            };
+    @Override
+    public void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+        audioManager.abandonAudioFocus(audioFocusChangeListener);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.word_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.word_list, container, false);
 
-        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        audioManager = (AudioManager) getActivity().getSystemService(AUDIO_SERVICE);
 
         //Create ArrayList of words
         final ArrayList<Word> words = new ArrayList<>();
@@ -66,9 +91,9 @@ public class PhrasesActivity extends AppCompatActivity {
         words.add(new Word("Let's go", "yoowutis", R.raw.phrase_lets_go));
         words.add(new Word("Come here.", "әnni'nem", R.raw.phrase_come_here));
 
-        WordAdapter adapter = new WordAdapter(this, words, R.color.category_phrases);
+        WordAdapter adapter = new WordAdapter(getActivity(), words, R.color.category_phrases);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView) rootView.findViewById(R.id.list);
 
         listView.setAdapter(adapter);
 
@@ -77,28 +102,16 @@ public class PhrasesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 releaseMediaPlayer();
                 Word word = words.get(position);
-                mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, word.getAudioResourceID());
+                mMediaPlayer = MediaPlayer.create(getActivity(), word.getAudioResourceID());
+                mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
 
                 /** Request Audio Focus **/
                 int result = audioManager.requestAudioFocus(audioFocusChangeListener,
                         AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
                 audioFocusChangeListener.onAudioFocusChange(result);
-
-                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        releaseMediaPlayer();
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
-                    }
-                });
             }
         });
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        releaseMediaPlayer();
-        audioManager.abandonAudioFocus(audioFocusChangeListener);
+        return rootView;
     }
 }
